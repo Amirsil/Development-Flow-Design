@@ -28,9 +28,8 @@ Soon after, An authorized team members will see the merge request assigned to th
 After the merge request was accepted, create a tag from `master` following semantic versioning practice (1.0.0) and document your features and changes
 The tag is important for documentation of the project's history, and for emergency cases when a rollback is needed
 
-Then, `Prod Management Service Set`, which is pointing to 
-
-`targetRevision: master` for the same project references as `Preprod Management Service Set` will automatically detect the changes in that git repository.
+Then, `Prod Management Service Set`, which points to `targetRevision: master` for the same projects `Preprod Management Service Set` points to.
+Then it will automatically detect the changes in that git repository.
 
 The only thing left to do is to sync `Prod Management Service Set` in Argo, and you are done! 
 The changes will now be live on production
