@@ -21,7 +21,7 @@ Then, to check the project in a preprod environment, I will change the targetRev
 Lets say everything went well and the application is behaving expectedly and integrating well with its environment.
 Now we want to deploy it to production.
 
-All we have to do now is to create a merge request in the stand-alone helm chart from the branch we worked on to `master` (Preferebly squash commits to avoid `Updated values.yaml` garbage commits and give the single commit a meaningful name).
+All we have to do now is to create a merge request in the stand-alone helm chart from the branch we worked on to `master` (Preferebly squash commits to avoid `Updated *.yaml` garbage commits and give the single commit a meaningful name).
 
 Soon after, An authorized team members will see the merge request assigned to them, briefly validate it (Because it's already tested in preprod environment), and merge it to `master` branch.
 
