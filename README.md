@@ -2,6 +2,7 @@ Problems in the current situation:
   - Every new feature must go through main monolithic repository - hard to track and maintain
   - Duplicates of projects - stand-alone helm chart must be copied to monolithic monorepo to be deployed to production
   - Coupling of unrelated projects in the same git repo creates many garbage unmeaningful commits
+  - 
 
 What this solution tries to achieve:
   - Developers work on seperate helm charts on feature branches
