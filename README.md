@@ -1,6 +1,6 @@
 Problems in the current situation:
   - Every new feature must go through main monolithic repository - hard to track and maintain
-  - Duplicates of projects - stand-alone helm chart must be copied to monolithic monorepo to be deployed to production
+  - Duplicate projects - stand-alone helm chart must be copied to a monolithic monorepo to be deployed to production
   - Coupling of unrelated projects in the same git repo creates many garbage unmeaningful commits
   - No RBAC flexibility - Development of Operators and Creation of the CR's themselves should be seperated. Not all projects should have the same level of authorization
 
