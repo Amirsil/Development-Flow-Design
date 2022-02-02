@@ -7,18 +7,18 @@ Problems in the current situation:
 What this solution tries to achieve:
   - Developers work on seperate helm charts on feature branches
   - Developers Reference their service's branch on group's preprod service-set, sync, and check sanity and integration with other projects
-  - Developers open a Merge Request with commit squash and a meaningful name in order to deploy to production
-  - Authorized team member will merge it to `master` branch
+  - Developers open a Merge Request with commits squash and a meaningful name in order to deploy to production
+  - Authorized team member will merge it to `master` branch and the feature branch will be deleted
   - Group's production service-set in which the service's `master` branch is referenced, will auto-detect changes
   - Developers will sync their changes to master
   - For each project, Prod monorepo will always point to specific tags, to own deployment control
   - For each project, Preprod monorepo will point to specific feature branches or to `master` 
 
-For this example ill be using Management Services, which is a logical group of services that are deployed on management hubs (Previously known as Management Hub Components).
+For this example let's use Management Services, which is a logical group of services that are deployed on management hubs (Previously known as Management Hub Components).
 
 2 Repos will coexist:
-- Preprod Management Service Set
-- Prod Management Service Set
+  - Preprod Management Service Set
+  - Prod Management Service Set
 
 ServiceSet - A repo template for Argo ApplicationSet which deploys a set of services defined in values.yaml to a specific cluster.
 
@@ -38,25 +38,22 @@ Example of services in `values.yaml`:
       path: .
 ```
 
-Lets say I want to add a feature to a project that is a part of Management Service Set (After application CI has passed successfully).
-I'll create a new branch for the feature in the helm chart and make the desired changes.
+Let's say you want to add a new service to Management Services or change an existing one, you will:
+  - create a new branch for the feature in the stand-alone helm chart and make the desired changes
+  - Add your service to `Preprod Management ServiceSet`'s `values.yaml`, with the `targetRevision` being the new branch
+  - change the targetRevision of the service's reference in "Preprod Management Service" Set's values.yaml
+  - sync `Preprod Management Service Set` in Argo
+  - Run sanity and integration tests (Or manually check application is behaving expectedly)
+<br>
 
-Then, to check the project in a preprod environment, I will change the targetRevision of the desired service reference in "Preprod Management Service" Set's values.yaml, and sync `Preprod Management Service Set` in Argo. 
-
-Lets say everything went well and the application is behaving expectedly and integrating well with its environment.
-Now we want to deploy it to production.
-
-All we have to do now is to create a merge request in the stand-alone helm chart from the branch we worked on to `master` (Preferebly squash commits to avoid `Updated *.yaml` garbage commits and give the single commit a meaningful name).
-
-Soon after, An authorized team members will see the merge request assigned to them, briefly validate it (Because it's already tested in preprod environment), and merge it to `master` branch.
-
-After the merge request was accepted, create a tag from `master` following semantic versioning practice (1.0.0) and document your features and changes
-The tag is important for documentation of the project's history, and for emergency cases when a rollback is needed
-
-Then, `Prod Management Service Set`, which points the same projects `Preprod Management Service Set` points to, only with `targetRevision: master`, so that it will automatically detect the changes in that git repository.
-
-The only thing left to do is to sync `Prod Management Service Set` in Argo, and you are done! 
-The changes will now be live on production
-
+Now you know the project is working well and is ready to be deployed to production, so next you will:
+  - Create a merge request to master, with commits squash and a meaningful name
+  - Assign the merge request to an authorized team member
+  - An authorized team member will see the merge request assigned to them, briefly validate it, and merge it to master 
+    > Important note - The term "authorized team member" is now much broader and based on the specific project, which enables much more flexible RBAC
+  - Create a tag from master following Semantic Versioning (0.0.1) and document the changes.
+  - Add the new service to `values.yaml` in `Prod Management ServiceSet`, with `targetRevision` being the new tag
+  - Sync `Prod Management ServiceSet` in ArgoCD
+  - Your new service is now live on production :)
 
 
