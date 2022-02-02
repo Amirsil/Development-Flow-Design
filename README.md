@@ -5,14 +5,10 @@ Problems in the current situation:
   - No RBAC flexibility - Development of Operators and Creation of the CR's themselves should be seperated. Not all projects should have the same level of authorization
 
 What this solution tries to achieve:
-  - Developers work on seperate helm charts on feature branches
-  - Developers Reference their service's branch on group's preprod service-set, sync, and check sanity and integration with other projects
-  - Developers open a Merge Request with commits squash and a meaningful name in order to deploy to production
-  - Authorized team member will merge it to `master` branch and the feature branch will be deleted
-  - Group's production service-set in which the service's `master` branch is referenced, will auto-detect changes
-  - Developers will sync their changes to master
-  - For each project, Prod monorepo will always point to specific tags, to own deployment control
-  - For each project, Preprod monorepo will point to specific feature branches or to `master` 
+  - Loose coupling between unrelated projects in the same group
+  - Seperate management of unrelated projects with different permissions that are in the same group (e.g. Operator CR's)
+  - For each project, Prod ServiceSet will always point to specific tags (Or `master` for seperated CD), to own deployment control
+  - For each project, Preprod ServiceSet will point to specific feature branches or to `master` 
 
 For this example let's use Management Services, which is a logical group of services that are deployed on management hubs (Previously known as Management Hub Components).
 
@@ -47,12 +43,12 @@ Let's say you want to add a new service to Management Services or change an exis
 <br>
 
 Now you know the project is working well and is ready to be deployed to production, so next you will:
-  - Create a merge request to master, with commits squash and a meaningful name
-  - Assign the merge request to an authorized team member
-  - An authorized team member will see the merge request assigned to them, briefly validate it, and merge it to master 
-    > Important note - The term "authorized team member" is now much broader and based on the specific project, which enables much more flexible RBAC
+  - Create a merge request to master, with commits squash and a meaningful name, and merge it, deleting the feature branch
   - Create a tag from master following Semantic Versioning (0.0.1) and document the changes.
   - Add the new service to `values.yaml` in `Prod Management ServiceSet`, with `targetRevision` being the new tag
+  - Open a merge request in `Prod Management ServiceSet` to deploy your new service to production
+  - Assign the merge request to an authorized team member
+  - An authorized team member will see the merge request assigned to them, briefly validate it, and merge it to master (Optional CD in the future)
   - Sync `Prod Management ServiceSet` in ArgoCD
   - Your new service is now live on production :)
 
