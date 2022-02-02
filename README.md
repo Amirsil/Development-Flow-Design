@@ -5,7 +5,7 @@ Problems in the current situation:
 
 What this solution tries to achieve:
   - Developers work on seperate helm charts on feature branches
-  - Developers Reference their service's branch on group's preprod service-set, sync, and check integration and sanity
+  - Developers Reference their service's branch on group's preprod service-set, sync, and check sanity and integration with other projects
   - Developers open a Merge Request in order to deploy to production
   - Authorized team member will merge it to `master` branch
   - Group's production service-set in which the service's `master` branch is referenced, will auto-detect changes
