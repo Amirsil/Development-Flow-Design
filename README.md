@@ -19,11 +19,18 @@ For this example ill be using Management Services, which is a logical group of s
 
 ServiceSet - A repo template for Argo ApplicationSet which deploys a set of services defined in values.yaml to a specific cluster.
 
-A service is a helm chart reference defined by:
-- serviceName
-- repoURL
-- targetRevision
-- path
+Example of services in `values.yaml`:
+```yml
+  services:
+    - serviceName: redis
+      repoURL: github.com/redis.git
+      targetRevision: master
+      path: .
+    - serviceName: tester
+      repoURL: github.com/tester.git
+      targetRevision: master
+      path: .
+```
 
 Lets say I want to add a feature to a project that is a part of Management Service Set (After application CI has passed successfully).
 I'll create a new branch for the feature in the helm chart and make the desired changes.
