@@ -10,6 +10,8 @@ What this solution tries to achieve:
   - Authorized team member will merge it to `master` branch
   - Group's production service-set in which the service's `master` branch is referenced, will auto-detect changes
   - Developers will sync their changes to master
+  - For each project, Prod monorepo will always point to specific tags, to own deployment control
+  - For each project, Preprod monorepo will point to specific feature branches or to `master` 
 
 For this example ill be using Management Services, which is a logical group of services that are deployed on management hubs (Previously known as Management Hub Components).
 
