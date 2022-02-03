@@ -9,9 +9,9 @@ Possible solutions:
 | Criteria | App-of-apps (Current) | Umbrella Chart | Service Set |
 | -------- | ----------- | -------------- | ----------- |
 | Group Architecutre | Coupled - All in one repo | Seperated - Each subchart has its own repo | Seperated - Each subchart has its own repo | 
-| CI needs | None      | CI in each subchart to package helm and push to harbor, CI in Umbrella chart to pull all helm repos from harbor and update helm tars in git repository  | None |
+| CI needs | None | CI in each subchart to package helm and push to harbor, CI in Umbrella chart to pull all helm repos from harbor and update helm tars in git repository  | None |
 | Argo Management | Easy management using Argo Application   | All projects are deployed together, hard to manage  | Easy management using Argo Application |
-| Seperate Version Control | Very hard, all projects are coupled so seperate versioned cannot be reverted to | Easy version control - helm repos have tags and are saved in harbor/git | Easy version control, each helm chart git repo has its own branches commits and tags that can be referenced directly in Service Set | 
+| Versioning | No versioning - All projects are glued together and are deployed directly from git, which makes seperate versioning impossible | Helm repo versioning - helm repos can he pushed to harbor with tags, which makes seperate versioning possible, but not very descriptive and hard to rely on | Git versioning - seperate helm charts can utilize git tags and branches, which makes seperate versioning easy, descriptive and flexible (tags for strict versioning, branches for easier deployment)  | 
 | Dependencies | ArgoCD and Git | No dependencies - all projects are packaged into the umbrella, so it can be deployed anywhere | ArgoCD and Git | 
 
 
