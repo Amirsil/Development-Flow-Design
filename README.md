@@ -15,7 +15,7 @@ Possible solutions:
 | Dependencies | ArgoCD and Git | No dependencies - all projects are packaged into the umbrella, so it can be deployed anywhere | ArgoCD and Git | 
 
 
-What this solution (Service Se) tries to achieve:
+What this solution (Service Set) tries to achieve:
   - Loose coupling between unrelated projects in the same group
   - Seperate management of unrelated projects with different permissions that are in the same group (e.g. Operator CR's)
   - For each project, Prod ServiceSet will always point to specific tags (Or `master` for seperated CD), to own deployment control
