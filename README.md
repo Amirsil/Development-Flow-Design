@@ -12,6 +12,7 @@ Possible solutions:
 | CI needs | None      | CI in each subchart to package helm and push to harbor, CI in Umbrella chart to pull all helm repos from harbor and update helm tars in git repository  | None |
 | Argo Management | Easy management using Argo Application   | All projects are deployed together, hard to manage  | Easy management using Argo Application |
 | Seperate Version Control | Very hard, all projects are coupled so seperate versioned cannot be reverted to | Easy version control - helm repos have tags and are saved in harbor/git | Easy version control, each helm chart git repo has its own branches commits and tags that can be referenced directly in Service Set | 
+| Dependencies | ArgoCD and Git | No dependencies - all projects are packaged into umbrella, so it can be deployed anywhere | ArgoCD and Git | 
 
 
 What this solution (Service Se) tries to achieve:
