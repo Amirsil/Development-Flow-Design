@@ -1,10 +1,20 @@
+
 Problems in the current situation:
   - Every new feature must go through main monolithic repository - hard to track and maintain
   - Duplicate projects - stand-alone helm chart must be copied to a monolithic monorepo to be deployed to production
   - Coupling of unrelated projects in the same git repo creates many garbage unmeaningful commits
   - No RBAC flexibility - Development of Operators and Creation of the CR's themselves should be seperated. Not all projects should have the same level of authorization
 
-What this solution tries to achieve:
+Possible solutions:
+| Criteria | App-of-apps | Umbrella Chart | Service Set |
+| -------- | ----------- | -------------- | ----------- |
+| Group Architecutre | Coupled - All in one repo | Seperated - Each subchart has its own repo | Seperated - Each subchart has its own repo | 
+| CI needs | None      | CI in each subchart to package helm and push to harbor, CI in Umbrella chart to pull all helm repos from harbor and update helm tars in git repository  | None |
+| Argo Management | Easy management using Argo Application   | All projects are deployed together, hard to manage  | Easy management using Argo Application |
+| Seperate Version Control | Very hard, all projects are coupled so seperate versioned cannot be reverted to | Easy version control - helm repos have tags and are saved in harbor/git | Easy version control, each helm chart git repo has its own branches commits and tags that can be referenced directly in Service Set | 
+
+
+What this solution (Service Se) tries to achieve:
   - Loose coupling between unrelated projects in the same group
   - Seperate management of unrelated projects with different permissions that are in the same group (e.g. Operator CR's)
   - For each project, Prod ServiceSet will always point to specific tags (Or `master` for seperated CD), to own deployment control
