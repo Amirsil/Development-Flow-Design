@@ -30,6 +30,7 @@ For this example let's use Management Services, which is a logical group of serv
 ServiceSet - A repo template for Argo ApplicationSet which deploys a set of services defined in values.yaml to a specific cluster.
 
 ApplicationSet - An ArgoCD Kubernetes resource, which addresses the appofapps Argo paradigm in a more elegant manner.
+
 [**Read more about ApplicationSet**](https://argocd-applicationset.readthedocs.io/en/stable/)
 
 Example of services in `values.yaml`:
