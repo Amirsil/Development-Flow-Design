@@ -6,14 +6,14 @@ Problems in the current situation:
   - No RBAC flexibility - Development of Operators and Creation of the CR's themselves should be seperated. Not all projects should have the same level of authorization
 
 Possible solutions:
-| Criteria | App-of-apps (Current) | Umbrella Chart | Service Set |
+| Criteria | App-of-apps (Current) | Umbrella Chart | ApplocationSet |
 | -------- | ----------- | -------------- | ----------- |
 | Group Architecutre | Coupled - All in one repo | Seperated - Each subchart has its own repo | Seperated - Each subchart has its own repo | 
 | CI needs | None | CI in each subchart to package helm and push to harbor, CI in Umbrella chart to pull all helm repos from harbor and update helm tars in git repository  | None |
 | Argo Management | Easy management using Argo Application   | All projects are deployed together, hard to manage  | Easy management using Argo Application |
 | Versioning | No versioning - All projects are glued together and are deployed directly from git, which makes seperate versioning impossible | Helm repo versioning - helm repos can he pushed to harbor with tags, which makes seperate versioning possible, but not very descriptive and hard to rely on | Git versioning - seperate helm charts can utilize git tags and branches, which makes seperate versioning easy, descriptive and flexible (tags for strict versioning, branches for easier deployment)  | 
 | Dependencies | ArgoCD and Git | No dependencies - all projects are packaged into the umbrella, so it can be deployed anywhere | ArgoCD and Git | 
-
+| Permissions | Centered and very strict - Every project change is monitored in the same repository, which gives the maintainer full control of what is deployed to production - Lots of work for monorepo maintainers | Permissions are strict and easy to manage but aren't so flexible - every helm repo tag change must be approved by a monorepo maintainer | Permissions are more flexible but are also more fragile - if `master` branch is referenced in production for a helm charts, their permissions to merge to `master` must be restricted |
 
 What this solution (Service Set) tries to achieve:
   - Loose coupling between unrelated projects in the same group
@@ -35,11 +35,11 @@ ApplicationSet - An ArgoCD Kubernetes resource, which addresses the appofapps Ar
 Example of services in `values.yaml`:
 ```yml
   services:
-    - serviceName: redis
+    redis:
       repoURL: github.com/redis.git
       targetRevision: master
       path: .
-    - serviceName: tester
+    tester:
       repoURL: github.com/tester.git
       targetRevision: master
       path: .
