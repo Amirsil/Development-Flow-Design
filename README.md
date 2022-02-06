@@ -6,7 +6,7 @@ Problems in the current situation:
   - No RBAC flexibility - Development of Operators and Creation of the CR's themselves should be seperated. Not all projects should have the same level of authorization
 
 Possible solutions:
-| Criteria | App-of-apps (Current) | Umbrella Chart | ApplocationSet |
+| Criteria | App-of-apps (Current) | Umbrella Chart | ApplicationSet |
 | -------- | ----------- | -------------- | ----------- |
 | Group Architecutre | Coupled - All in one repo | Seperated - Each subchart has its own repo | Seperated - Each subchart has its own repo | 
 | CI needs | None | CI in each subchart to package helm and push to harbor, CI in Umbrella chart to pull all helm repos from harbor and update helm tars in git repository  | None |
