@@ -8,8 +8,8 @@ Problems in the current situation:
 What this solution (Service Set) tries to achieve:
   - Loose coupling between unrelated projects in the same group
   - Seperate management of unrelated projects with different permissions that are in the same group (e.g. Operator CR's)
-  - For each project, Prod ServiceSet will always point to specific tags (Or `master` for seperated CD), to own deployment control
-  - For each project, Preprod ServiceSet will point to specific feature branches or to `master` 
+  - For each project, Prod ServiceSet will always point to `values.yaml`
+  - For each project, Preprod ServiceSet will point to `values.prep.yaml`, which contains granular patches (Usually of image versions) and is continously deployed to preprod cluster. 
 
 Possible solutions comparison:
 | Criteria | App-of-apps (Current) | Umbrella Chart | ApplicationSet |
@@ -46,18 +46,15 @@ Example of services in `values.yaml`:
       path: .
 ```
 
-Let's say you want to add a new service to Management Services or change an existing one, you will:
-  - create a new branch for the feature in the stand-alone helm chart and make the desired changes
-  - Add your service to `Preprod Management ServiceSet`'s `values.yaml`, with the `targetRevision` being the new branch
-  - change the targetRevision of the service's reference in "Preprod Management Service" Set's values.yaml
+Let's say you want to change an existing service on Management Services:
+  - add your changes to `values.prep.yaml`, or create a new branch if the changes are too big to only change `values.yaml`.
+  - Add your service to `Preprod Management ServiceSet`'s `values.yaml`, referencing `values.prep.yaml` or the new branch
   - sync `Preprod Management Service Set` in Argo
   - Run sanity and integration tests (Or manually check application is behaving expectedly)
 <br>
 
 Now you know the project is working well and is ready to be deployed to production, so next you will:
-  - Create a merge request to master, with commits squash and a meaningful name, and merge it, deleting the feature branch
-  - Create a tag from master following Semantic Versioning (0.0.1) and document the changes.
-  - Add the new service to `values.yaml` in `Prod Management ServiceSet`, with `targetRevision` being the new tag
+  - Create a merge request to change `values.yaml` or to merge the feature branch to master on the subchart
   - Open a merge request in `Prod Management ServiceSet` to deploy your new service to production
   - Assign the merge request to an authorized team member
   - An authorized team member will see the merge request assigned to them, briefly validate it, and merge it to master (Optional CD in the future)
