@@ -10,7 +10,8 @@ What this solution (Service Set) tries to achieve:
   - Seperate management of unrelated projects with different permissions that are in the same group (e.g. Operator CR's)
   - For each project, Prod ServiceSet will always point to `values.yaml`
   - For each project, Preprod ServiceSet will point to `values.prep.yaml`, which contains granular patches (Usually of image versions) and is continously deployed to preprod cluster. 
-  - Much better resource utilization - Instead of having n*n (clusters * services) Application CR's, there are only 2 ApplicationSets (One per cluster group and one per resource gruop)
+  - Much better resource utilization - Instead of having n*n (clusters * services) Application CR's, there are only 2 ApplicationSets (One per cluster group and one per service gruop)
+  - Uniformity between different groups and different environments 
 
 Possible solutions comparison:
 | Criteria | App-of-apps (Current) | Umbrella Chart | ApplicationSet |
